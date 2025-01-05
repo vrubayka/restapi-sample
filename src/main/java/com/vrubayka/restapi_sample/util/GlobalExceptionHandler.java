@@ -1,3 +1,4 @@
+package com.vrubayka.restapi_sample.util;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;

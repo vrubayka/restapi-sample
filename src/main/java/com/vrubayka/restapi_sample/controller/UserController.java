@@ -20,7 +20,7 @@ public class UserController {
     public ResponseEntity<String> createUser(@RequestBody User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.save(user); // This can throw ConstraintViolationException or other exceptions
+            session.persist(user); // This can throw ConstraintViolationException or other exceptions
             transaction.commit();
             return new ResponseEntity<>("User created successfully!", HttpStatus.CREATED);
         } catch (ConstraintViolationException e) {
