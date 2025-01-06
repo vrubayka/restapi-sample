@@ -21,8 +21,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<String> handleDuplicateEmail(ConstraintViolationException ex) {
         // Log the exact exception with details
-        logger.error("Duplicate email error: ", ex);
-        return new ResponseEntity<>("Duplicate email detected: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+        logger.error("This email has already been registered to a different account", ex);
+        return new ResponseEntity<>("This email has already been registered to a different account: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(PersistenceException.class)
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
         // Log the exact exception with details
         logger.error("SQL error: ", ex);
         if ("23505".equals(ex.getSQLState())) { // Duplicate key error
-            return new ResponseEntity<>("Duplicate email detected.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("This email has already been registered to a different account.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("SQL error: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
