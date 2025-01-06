@@ -1,5 +1,7 @@
 package com.vrubayka.restapi_sample.util;
 
+import java.sql.SQLException;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,12 +32,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("Database error: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleRuntimeError(RuntimeException ex) {
+    @ExceptionHandler(SQLException.class)
+    public ResponseEntity<String> handleSQLException(SQLException ex) {
         // Log the exact exception with details
-        logger.error("Runtime error: ", ex);
-        return new ResponseEntity<>("An unexpected error occurred: " + ex.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR);
+        logger.error("SQL error: ", ex);
+        if ("23505".equals(ex.getSQLState())) { // Duplicate key error
+            return new ResponseEntity<>("Duplicate email detected.", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("SQL error: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(Exception.class)

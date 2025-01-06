@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
+//Class is needed to allow Requests to be processed for React frontend
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     @Override
